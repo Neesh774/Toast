@@ -13,3 +13,8 @@ npm-debug.log*
 # Optional npm cache directory
 .npm
 /package-lock.json
+
+# Rule sets
+.prettierignore
+.prettierrc.json
+.eslintrc.json
