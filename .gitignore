@@ -3,6 +3,7 @@ config.json
 
 # Dependencies
 node_modules/
+package-lock.json
 
 # Logs
 logs
@@ -11,3 +12,4 @@ npm-debug.log*
 
 # Optional npm cache directory
 .npm
+/package-lock.json
