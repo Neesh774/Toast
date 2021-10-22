@@ -3,10 +3,8 @@
 # Toast
 The one-stop discord bot that you need for all of your image generating needs. Memes, quotes, random images with text, Toast's got it all!
 
-
-## Contributing
-
-Thanks for your interest in contributing to Toast! Before making any changes, [open an issue](https://github.com/Neesh774/Toast/issues) to make sure they're needed.!
+## Support
+You can join the (support server)[https://discord.gg/4Hd8MxuJkv], or friend me at ツCheesyNeeshツ#8152.
 
 ## License
 
