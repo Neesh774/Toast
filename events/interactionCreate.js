@@ -1,5 +1,5 @@
 const { Collection } = require("discord.js");
-const { disabledCommands } = require("../config.json");
+const { disabledCommands, admins } = require("../config.json");
 
 const cooldowns = new Collection();
 
@@ -62,15 +62,24 @@ module.exports = {
 					});
 				}
 			}
+			if (command.permission === "admin") {
+				if (!admins.includes(user.id)) {
+					return await interaction.reply({
+						content:
+							"✋ **|** That action requires the **Bot Administrator** permission.",
+						ephemeral: true,
+					});
+				}
+			}
 		}
 		try {
 			await interaction.deferReply();
-			await command.execute(interaction);
+			await command.execute(interaction, client);
 		} catch (error) {
 			console.error(`Failed to execute command ${commandName}
 * ${error}`);
 
-			interaction.reply({
+			interaction.editReply({
 				content:
 					"❌ **|** Something went wrong while executing that command.!",
 				ephemeral: true,

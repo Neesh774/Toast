@@ -1,8 +1,17 @@
+const mongoose = require("mongoose");
+const { mongoPath } = require("../config.json");
 module.exports = {
 	name: "ready",
 	once: true,
 	async execute(client) {
 		console.log(`Logged in as ${client.user.tag} (${client.user.id})`);
+
+		await mongoose.connect(mongoPath, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
+
+		console.log("Connected to mongoDB");
 
 		const currentGuilds = client.guilds.cache.map((g) => g.id);
 

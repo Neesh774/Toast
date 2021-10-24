@@ -2,8 +2,8 @@
 	"name": "Toast",
 	"version": "3.1.0",
 	"description": "A Discord bot which stores quotes for servers & retrieves them on demand. It supports listing, (randomly) displaying, deleting, and editing quotes!",
-	"homepage": "https://github.com/nchristopher/Toast#readme",
-	"author": "Neesh774 <nchristopher@tuta.io> (https://nchristopher.me)",
+	"homepage": "https://github.com/Neesh774/Toast#readme",
+	"author": "Neesh774",
 	"license": "AGPL-3.0-only",
 	"main": "main.js",
 	"private": true,
@@ -18,21 +18,22 @@
 		"npm": "^8.0.0"
 	},
 	"bugs": {
-		"url": "https://github.com/nchristopher/Toast/issues"
+		"url": "https://github.com/Neesh774/Toast/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/nchristopher/Toast.git"
+		"url": "git+https://github.com/Neesh774/Toast.git"
 	},
 	"dependencies": {
 		"@discordjs/builders": "^0.7.0",
 		"@discordjs/rest": "^0.1.0-canary.0",
 		"bufferutil": "^4.0.5",
 		"canvas": "^2.8.0",
+		"canvas-wrapper": "^1.0.0",
 		"discord-api-types": "^0.24.0",
 		"discord.js": "^13.2.0",
 		"fuse.js": "^6.4.6",
-		"mongoose": "^6.0.11",
+		"mongoose": "^6.0.12",
 		"ms": "^2.1.3",
 		"utf-8-validate": "^5.0.7",
 		"words-array": "^1.0.1",

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const Canvas = require("canvas");
-const MultiLine = require("../util/MultiLine");
+const { MultiLine } = require("canvas-wrapper");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("test")
