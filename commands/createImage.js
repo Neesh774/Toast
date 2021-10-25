@@ -24,19 +24,20 @@ module.exports = {
 		if(client.imageCreation.has(interaction.user.id)) {
 			return interaction.editReply("You are already creating an image!");
 		}
-		client.imageCreation.set(interaction.user.id, {
-			background: null,
-			text: [],
-		});
         await interaction.editReply({ content: "Check your DMs!" });
 		const initialEmbed = new MessageEmbed()
 			.setColor(color)
 			.setAuthor("Image Creation / Background Creation", client.user.avatarURL())
 			.setFooter("Type `cancel` at any time to cancel this process")
 			.setDescription("Please select what kind of background you want!");
-		const initialMessage = await interaction.user.send({ embeds: [initialEmbed], components: [backgroundImageButtons] });
+		const initialMessage = await interaction.user.send({ embeds: [initialEmbed], components: [backgroundImageButtons] })
+			.catch(() => { return interaction.editReply("I can't DM you! Please enable DMs for this server, or allow DMs from non-friends."); });
+		if(initialMessage.content) return;
 		const DMChannel = initialMessage.channel;
-
+		client.imageCreation.set(interaction.user.id, {
+			background: null,
+			text: [],
+		});
 		const cancelCollectorFilter = (message) => {
 			return message.content.toLowerCase() === "cancel" && !message.author.bot;
 		};

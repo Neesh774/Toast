@@ -7,7 +7,7 @@ const collectorEnd = require("./collectorEnd");
 const renderImage = require("./renderImage");
 const textCollector = require("./textCollector");
 module.exports = async function imageEditFunction(message, client) {
-    await message.awaitMessageComponent({ max: 1, time: 600000, errors: ["time"] })
+    await message.awaitMessageComponent({ max: 1, time: 3000, errors: ["time"] })
         .then(async collected => {
             if(collected.customId === "editText") {
                 const textEditEmbed = new MessageEmbed()
@@ -46,8 +46,7 @@ module.exports = async function imageEditFunction(message, client) {
                 return client.imageCreation.delete(collected.user.id);
             }
         })
-        .catch((e) => {
-            console.log(e);
+        .catch(() => {
             collectorEnd(message, true, client);
         });
 };

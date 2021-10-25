@@ -12,7 +12,9 @@ module.exports = async function textEditFunction(message, client, interaction) {
     const index = parseInt(interaction.values[0]);
     const text = client.imageCreation.get(interaction.user.id).text[index];
     const buttonCollector = message.createMessageComponentCollector({ time: 60000 });
+    let collected = false;
     buttonCollector.on("collect", async (i) => {
+        collected = true;
         if(i.customId.startsWith("x+") || i.customId.startsWith("x-")) {
             i.customId.startsWith("x+") ? text.x += parseInt(i.customId.substring(2)) : text.x -= parseInt(i.customId.substring(2));
             if(text.x < 10) text.x = 10;
@@ -81,5 +83,5 @@ module.exports = async function textEditFunction(message, client, interaction) {
             await require("./imageEditCollector")(await i.fetchReply(), client);
         }
     });
-    buttonCollector.on("end", async () => {collectorEnd(message);});
+    buttonCollector.on("end", async () => {if(collected) collectorEnd(message);});
 };
