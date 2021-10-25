@@ -1,5 +1,6 @@
 const { parse, convert } = require("pure-color");
 const { MessageEmbed } = require("discord.js");
+const { Canvas } = require("canvas");
 const { loadImage } = require("canvas");
 const { color } = require("../../config.json");
 const collectorEnd = require("./collectorEnd");
@@ -16,7 +17,7 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
         // BLACK OR WHITE
         if(i.customId === "black" || i.customId === "white") {
             ctx.fillStyle = i.customId;
-            ctx.fillRect(0, 0, 500, 500);
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             i.editReply("Successfully set the background!");
             await initialMessage.edit({ embeds: [initialEmbed], files: [canvas.toBuffer("image/jpeg")] });
         }
@@ -37,7 +38,7 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
                     const selectedColor = convert.rgb.hex(parse(m.content));
                     if(selectedColor) {
                         ctx.fillStyle = selectedColor;
-                        ctx.fillRect(0, 0, 500, 500);
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
                         m.reply("Successfully set the background!");
                         await initialMessage.edit({ files: [canvas.toBuffer("image/jpeg")] });
                     }
@@ -56,7 +57,7 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
             const customImageEmbed = new MessageEmbed()
                 .setColor(color)
                 .setAuthor("Step 1b", client.user.avatarURL())
-                .setDescription("Please attach an image to be used as the background! Please make sure it's at most 500x500");
+                .setDescription("Please attach an image to be used as the background!");
             const customImageMessage = await i.channel.send({ embeds: [customImageEmbed] });
 
             await i.channel.awaitMessages({ filter: imageFilter, time: 60000, max: 1, errors: ["time"] })
@@ -64,7 +65,9 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
                     m = m.first();
                     const imageInput = await m.attachments.first().url;
                     const image = await loadImage(imageInput);
-                    ctx.drawImage(image, 0, 0, 500, 500);
+                    canvas = new Canvas(image.width, image.height);
+                    ctx = canvas.getContext("2d");
+                    ctx.drawImage(image, 0, 0);
                     m.reply("Successfully set the background!");
                     await initialMessage.edit({ files: [canvas.toBuffer("image/jpeg")] });
                 })
@@ -76,4 +79,5 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
         const imageObject = client.imageCreation.get(user.id);
         imageObject.background = canvas.toBuffer("image/jpeg");
         client.imageCreation.set(user.id, imageObject);
+        return canvas;
 };

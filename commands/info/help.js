@@ -31,7 +31,7 @@ module.exports = {
         const message = await interaction.editReply({ embeds: [embed], components: [row] });
 
         const filter = (i) => categoryNames.includes(i.customId) && i.user.id === interaction.author.id;
-        const collector = message.createMessageComponentCollector(filter, { time: 5000 });
+        const collector = message.createMessageComponentCollector(filter, { time: 3000 });
 
         collector.on("collect", async (i) => {
             const commands = categories.get(i.values[0]);

@@ -22,10 +22,10 @@ const row = new MessageActionRow()
     .setComponents([image, text, done]);
 
 module.exports = function imageChoices(client, user) {
-    const options = client.imageCreation.get(user.id).text.map(textObj => {
+    const options = client.imageCreation.get(user.id).text.map((textObj, index) => {
         return {
             label: textObj.text,
-            value: textObj.text,
+            value: `${index}`,
             description: "A custom text",
         };
     });

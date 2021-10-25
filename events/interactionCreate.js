@@ -77,7 +77,7 @@ module.exports = {
 			await command.execute(interaction, client);
 		} catch (error) {
 			console.error(`Failed to execute command ${commandName}
-* ${error}`);
+* ${error.stack}`);
 
 			interaction.editReply({
 				content:

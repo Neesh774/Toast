@@ -11,6 +11,7 @@ const imageChoices = require("../util/createImageUtils/imageChoices");
 // Collectors
 const backgroundButtonCollectorFunction = require("../util/createImageUtils/backgroundButtonCollector");
 const textCollector = require("../util/createImageUtils/textCollector");
+const imageEditCollector = require("../util/createImageUtils/imageEditCollector");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -49,19 +50,24 @@ module.exports = {
 			return await message.channel.send({ embeds: [cancelEmbed] });
 		});
 
-		const canvas = Canvas.createCanvas(500, 500);
-        const ctx = canvas.getContext("2d");
+		let canvas = Canvas.createCanvas(500, 500);
+        let ctx = canvas.getContext("2d");
 
-		await backgroundButtonCollectorFunction(initialMessage, initialEmbed, ctx, canvas, interaction.user, client);
-
+		const editedCanvas = await backgroundButtonCollectorFunction(initialMessage, initialEmbed, ctx, canvas, interaction.user, client);
+		if(editedCanvas) {
+			canvas = editedCanvas;
+			ctx = canvas.getContext("2d");
+		}
 		const textEmbed = new MessageEmbed()
 			.setColor(color)
 			.setAuthor("Step 2", client.user.avatarURL())
 			.setFooter("Type `cancel` at any time to cancel this process")
 			.setDescription("Please enter the text you want to place on the image!");
 		const textMessage = await interaction.user.send({ embeds: [textEmbed] });
+
 		let choiceMessage;
-		textCollector(textMessage, textEmbed, ctx, canvas, interaction.user, client).then(async () => {
+		await textCollector(textMessage, textEmbed, ctx, canvas, interaction.user, client).then(async () => {
+			if(!client.imageCreation.has(interaction.user.id)) return;
 			const choiceEmbed = new MessageEmbed()
 				.setColor(color)
 				.setAuthor("Step 3", client.user.avatarURL())
@@ -69,5 +75,7 @@ module.exports = {
 				.setDescription("Press one of the buttons below to continue.");
 			choiceMessage = await interaction.user.send({ embeds: [choiceEmbed], components: imageChoices(client, interaction.user) });
 		});
+		if(!client.imageCreation.has(interaction.user.id)) return;
+		imageEditCollector(choiceMessage, client);
 	},
 };

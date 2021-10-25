@@ -5,35 +5,35 @@ const invert = require("invert-color");
 const collectorEnd = require("./collectorEnd");
 
 module.exports = async function textCollectorFunction(message, initialEmbed, ctx, canvas, user, client) {
-    const filter = m => m.author.id === user.id;
+    const filter = (m) => {
+        return !m.author.bot && m.content.length < 200;
+    };
 
-    const collected = await message.channel.awaitMessages({ filter, max: 1, time: 60000, errors: ["time"] })
+    let collected = true;
+    const collectedArray = await message.channel.awaitMessages({ filter: filter, max: 1, time: 30000, errors: ["time"] })
         .catch(() => {
-            collectorEnd(message, true, client);
+            collected = false;
         });
-
-    const m = collected.first();
-    if (m.content.length > 200) {
-        return await message.channel.send("Your text is too long. Please try again.");
-    }
-    await new Promise((resolve) => {
+    if(!collected) return collectorEnd(message, true, client);
+    return await new Promise((resolve, reject) => {
+        const m = collectedArray.first();
         average(canvas.toBuffer(), async (err, color) => {
             ctx.fillStyle = invert([color[0], color[1], color[2]], true);
+            const textSize = Math.floor(canvas.width / 15);
             CanvasTextWrapper(canvas, m.content, {
-                font: "30px Arial",
+                font: `${textSize}px Arial`,
                 paddingX: 10,
                 paddingY: 10,
                 maxFontSizeToFill: 200,
             });
             const imageObject = client.imageCreation.get(user.id);
+            if(!imageObject) reject();
             imageObject.text.push({
                 text: m.content,
+                fontSize: textSize,
                 color: ctx.fillStyle,
                 x: 0,
                 y: 0,
-                width: 500,
-                height: 500,
-                rotation: 0,
             });
             client.imageCreation.set(user.id, imageObject);
             await message.edit({ embeds: [initialEmbed], files: [canvas.toBuffer("image/jpeg")] });
