@@ -24,7 +24,7 @@ module.exports = {
 			.reduce((acc, g) => acc + g.memberCount, 0)
 			.toLocaleString();
 
-		await interaction.reply({
+		await interaction.editReply({
 			embeds: [
 				new MessageEmbed()
 					.setTitle("💬 Information")
@@ -35,7 +35,7 @@ module.exports = {
 [🙋 Support Server](https://discord.gg/4Hd8MxuJkv) 
 [🐛 Report Bugs](https://github.com/Neesh774/Toast/issues/new/choose)
 [🛠️ Source Code](https://github.com/Neesh774/Toast)
-[🔒 Privacy Policy](https://github.com/Neesh774/Toast/blob/main/privacy.md)`
+[❗ More Info](https://bit.ly/3CdR299)`
 					)
 					.addField(
 						"Server Count",
