@@ -73,7 +73,7 @@ module.exports = {
 			}
 		}
 		try {
-			await interaction.deferReply();
+			await interaction.deferReply({ epehemeral: command.ephemeral });
 			await command.execute(interaction, client);
 		} catch (error) {
 			console.error(`Failed to execute command ${commandName}
@@ -81,7 +81,7 @@ module.exports = {
 
 			interaction.editReply({
 				content:
-					"❌ **|** Something went wrong while executing that command.!",
+					"❌ **|** Something went wrong while executing that command!",
 				ephemeral: true,
 			});
 		}

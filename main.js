@@ -7,7 +7,7 @@ const { readdirSync } = require("fs");
 const config = require("./config.json");
 
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS],
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGES],
 	allowedMentions: { parse: [] },
 	makeCache: Options.cacheWithLimits({
 		MessageManager: 0,
@@ -19,6 +19,7 @@ client.admins = config.admins;
 client.commands = new Collection();
 client.aliases = new Collection();
 client.categories = new Collection();
+client.imageCreation = new Collection();
 
 readdirSync("./commands").forEach(dir => {
 	// if it's a command file
