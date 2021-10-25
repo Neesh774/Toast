@@ -28,11 +28,12 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
             };
             const customColorEmbed = new MessageEmbed()
                 .setColor(color)
-                .setAuthor("Step 1b", client.user.avatarURL())
+                .setAuthor("Image Creation / Background Creation / Custom Color", client.user.avatarURL())
+                .setFooter("Type `cancel` at any time to end this process")
                 .setDescription("Please enter the color you want your background to be in the format #`ffffff`, or rgb(`r`, `g`, `b`)");
             const customColorMessage = await i.channel.send({ embeds: [customColorEmbed] });
 
-            await i.channel.awaitMessages({ filter: colorFilter, time: 60000, max: 1, errors: ["time"] })
+            await i.channel.awaitMessages({ filter: colorFilter, time: 30000, max: 1, errors: ["time"] })
                 .then(async m => {
                     m = m.first();
                     const selectedColor = convert.rgb.hex(parse(m.content));
@@ -46,7 +47,9 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
                         m.reply("Please enter a valid color!");
                     }
                 })
-                .catch(() => { collectorEnd(customColorMessage, true, client);});
+                .catch(() => {
+                    collectorEnd(customColorMessage, true, client);
+                });
         }
 
         // CUSTOM IMAGE
@@ -56,7 +59,7 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
             };
             const customImageEmbed = new MessageEmbed()
                 .setColor(color)
-                .setAuthor("Step 1b", client.user.avatarURL())
+                .setAuthor("Image Creation / Background Creation / Custom Image", client.user.avatarURL())
                 .setDescription("Please attach an image to be used as the background!");
             const customImageMessage = await i.channel.send({ embeds: [customImageEmbed] });
 
@@ -76,8 +79,10 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
         })
         .catch(async () => {collectorEnd(initialMessage, true, client);});
 
-        const imageObject = client.imageCreation.get(user.id);
-        imageObject.background = canvas.toBuffer("image/jpeg");
-        client.imageCreation.set(user.id, imageObject);
-        return canvas;
+        if(client.imageCreation.has(user.id)) {
+            const imageObject = client.imageCreation.get(user.id);
+            imageObject.background = canvas.toBuffer("image/jpeg");
+            client.imageCreation.set(user.id, imageObject);
+            return canvas;
+        }
 };

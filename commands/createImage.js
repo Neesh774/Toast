@@ -31,7 +31,7 @@ module.exports = {
         await interaction.editReply({ content: "Check your DMs!" });
 		const initialEmbed = new MessageEmbed()
 			.setColor(color)
-			.setAuthor("Step 1", client.user.avatarURL())
+			.setAuthor("Image Creation / Background Creation", client.user.avatarURL())
 			.setFooter("Type `cancel` at any time to cancel this process")
 			.setDescription("Please select what kind of background you want!");
 		const initialMessage = await interaction.user.send({ embeds: [initialEmbed], components: [backgroundImageButtons] });
@@ -58,22 +58,19 @@ module.exports = {
 			canvas = editedCanvas;
 			ctx = canvas.getContext("2d");
 		}
+
+		if(!client.imageCreation.has(interaction.user.id)) return;
 		const textEmbed = new MessageEmbed()
 			.setColor(color)
-			.setAuthor("Step 2", client.user.avatarURL())
+			.setAuthor("Image Creation / Text Creation", client.user.avatarURL())
 			.setFooter("Type `cancel` at any time to cancel this process")
 			.setDescription("Please enter the text you want to place on the image!");
 		const textMessage = await interaction.user.send({ embeds: [textEmbed] });
 
 		let choiceMessage;
-		await textCollector(textMessage, textEmbed, ctx, canvas, interaction.user, client).then(async () => {
+		await textCollector(textMessage, textEmbed, interaction.user, client).then(async () => {
 			if(!client.imageCreation.has(interaction.user.id)) return;
-			const choiceEmbed = new MessageEmbed()
-				.setColor(color)
-				.setAuthor("Step 3", client.user.avatarURL())
-				.setFooter("Type `cancel` at any time to cancel this process")
-				.setDescription("Press one of the buttons below to continue.");
-			choiceMessage = await interaction.user.send({ embeds: [choiceEmbed], components: imageChoices(client, interaction.user) });
+			choiceMessage = await interaction.user.send(await imageChoices(client, interaction.user));
 		});
 		if(!client.imageCreation.has(interaction.user.id)) return;
 		imageEditCollector(choiceMessage, client);

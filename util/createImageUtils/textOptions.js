@@ -29,7 +29,7 @@ const horizontalRow = new MessageActionRow()
 
 const yMinusTwenty = new MessageButton()
     .setCustomId("y-20")
-    .setLabel("-5")
+    .setLabel("-20")
     .setEmoji("🔽")
     .setStyle("PRIMARY");
 const yMinusFive = new MessageButton()
@@ -43,12 +43,12 @@ const vertical = new MessageButton()
     .setStyle("SECONDARY");
 const yPlusFive = new MessageButton()
     .setCustomId("y+5")
-    .setLabel("+1")
+    .setLabel("+5")
     .setEmoji("🔼")
     .setStyle("PRIMARY");
 const yPlusTwenty = new MessageButton()
     .setCustomId("y+20")
-    .setLabel("+10")
+    .setLabel("+20")
     .setEmoji("🔼")
     .setStyle("PRIMARY");
 const verticalRow = new MessageActionRow()
@@ -84,12 +84,14 @@ const textSizeRow = new MessageActionRow()
 const color = new MessageButton()
     .setCustomId("color")
     .setLabel("Color")
+    .setEmoji("🎨")
     .setStyle("PRIMARY");
-const cancel = new MessageButton()
-    .setCustomId("cancel")
-    .setLabel("Cancel")
+const back = new MessageButton()
+    .setCustomId("back")
+    .setLabel("Back")
+    .setEmoji("⬅️")
     .setStyle("DANGER");
 const colorRow = new MessageActionRow()
-    .setComponents([color, cancel]);
+    .setComponents([color, back]);
 
 module.exports = [horizontalRow, verticalRow, textSizeRow, colorRow];

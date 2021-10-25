@@ -1,4 +1,6 @@
-const { MessageButton, MessageActionRow, MessageSelectMenu } = require("discord.js");
+const { MessageButton, MessageActionRow, MessageSelectMenu, MessageEmbed } = require("discord.js");
+const { color } = require("../../config.json");
+const renderImage = require("./renderImage");
 
 const image = new MessageButton()
     .setLabel("Image")
@@ -21,7 +23,12 @@ const done = new MessageButton()
 const row = new MessageActionRow()
     .setComponents([image, text, done]);
 
-module.exports = function imageChoices(client, user) {
+module.exports = async function imageChoices(client, user) {
+    const choiceEmbed = new MessageEmbed()
+        .setColor(color)
+        .setAuthor("Image Creation / Image Editing", client.user.avatarURL())
+        .setFooter("Type `cancel` at any time to cancel this process")
+        .setDescription("Press one of the buttons below to continue.");
     const options = client.imageCreation.get(user.id).text.map((textObj, index) => {
         return {
             label: textObj.text,
@@ -34,6 +41,7 @@ module.exports = function imageChoices(client, user) {
         .setPlaceholder("Edit Text")
         .setMaxValues(1)
         .setOptions(options);
+    const imageFile = (await renderImage(client, user)).toBuffer();
     const editTextRow = new MessageActionRow().addComponents([editText]);
-    return [row, editTextRow];
+    return { embeds: [choiceEmbed], components: [row, editTextRow], files: [imageFile] };
 };
