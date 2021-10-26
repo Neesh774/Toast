@@ -30,7 +30,7 @@
 		"bufferutil": "^4.0.5",
 		"canvas": "^2.8.0",
 		"canvas-text-wrapper": "^0.10.2",
-		"canvas-wrapper": "^1.0.1",
+		"canvas-wrapper": "^2.0.0",
 		"discord-api-types": "^0.24.0",
 		"discord.js": "^13.2.0",
 		"fuse.js": "^6.4.6",
