@@ -2,6 +2,12 @@ const { MessageButton, MessageActionRow, MessageSelectMenu, MessageEmbed } = req
 const { color } = require("../../config.json");
 const renderImage = require("./renderImage");
 
+const background = new MessageButton()
+    .setLabel("Switch Background")
+    .setEmoji("🪟")
+    .setCustomId("background")
+    .setStyle("PRIMARY");
+
 const image = new MessageButton()
     .setLabel("Image")
     .setEmoji("🖼️")
@@ -21,12 +27,12 @@ const done = new MessageButton()
     .setStyle("DANGER");
 
 const row = new MessageActionRow()
-    .setComponents([image, text, done]);
+    .setComponents([background, image, text, done]);
 
 module.exports = async function imageChoices(client, user) {
     const choiceEmbed = new MessageEmbed()
         .setColor(color)
-        .setAuthor("Image Creation / Image Editing", client.user.avatarURL())
+        .setAuthor("Image Creation/Image Editing", client.user.avatarURL())
         .setFooter("Type `cancel` at any time to cancel this process")
         .setDescription("Press one of the buttons below to continue.");
     const options = client.imageCreation.get(user.id).text.map((textObj, index) => {
@@ -43,5 +49,7 @@ module.exports = async function imageChoices(client, user) {
         .setOptions(options);
     const imageFile = (await renderImage(client, user)).toBuffer();
     const editTextRow = new MessageActionRow().addComponents([editText]);
-    return { embeds: [choiceEmbed], components: [row, editTextRow], files: [imageFile] };
+    const rows = [row];
+    if(options.length > 0) rows.push(editTextRow);
+    return { embeds: [choiceEmbed], components: rows, files: [imageFile] };
 };

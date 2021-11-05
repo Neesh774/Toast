@@ -1,5 +1,5 @@
 const { Canvas, loadImage } = require("canvas");
-const { CanvasTextWrapper } = require("canvas-text-wrapper");
+const { CanvasTextWrapper } = require("canvas-wrapper");
 
 module.exports = async function renderImage(client, user) {
     const imageObj = client.imageCreation.get(user.id);
@@ -9,11 +9,16 @@ module.exports = async function renderImage(client, user) {
     const ctx = canvas.getContext("2d");
     ctx.drawImage(background, 0, 0, background.width, background.width);
     imageObj.text.forEach(textObj => {
+        if(textObj.x > canvas.width) textObj.x = canvas.width;
+        if(textObj.y > canvas.height) textObj.y = canvas.height;
+        if(textObj.x < 0) textObj.x = 0;
+        if(textObj.y < 0) textObj.y = 0;
         ctx.fillStyle = textObj.color;
         CanvasTextWrapper(canvas, textObj.text, {
             font: `${textObj.fontSize}px Arial`,
-            paddingX: textObj.x < 10 ? 10 : textObj.x,
-            paddingY: textObj.y < 10 ? 10 : textObj.y,
+            offsetX: textObj.x,
+            offsetY: textObj.y,
+            maxWidth: canvas.width - textObj.x,
         });
     });
     return canvas;

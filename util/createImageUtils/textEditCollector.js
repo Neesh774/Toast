@@ -53,7 +53,7 @@ module.exports = async function textEditFunction(message, client, interaction) {
             const customColorEmbed = new MessageEmbed()
                 .setColor(color)
                 .setFooter("Type `cancel` at any time to end this process")
-                .setAuthor("Image Creation / Image Editing / Custom Color", client.user.avatarURL())
+                .setAuthor("Image Creation/Image Editing/Custom Color", client.user.avatarURL())
                 .setDescription("Please enter the color you want your background to be in the format #`ffffff`, or rgb(`r`, `g`, `b`)");
             await i.reply({ embeds: [customColorEmbed] });
 

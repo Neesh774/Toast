@@ -27,11 +27,11 @@ module.exports = {
         await interaction.editReply({ content: "Check your DMs!" });
 		const initialEmbed = new MessageEmbed()
 			.setColor(color)
-			.setAuthor("Image Creation / Background Creation", client.user.avatarURL())
+			.setAuthor("Image Creation/Background Creation", client.user.avatarURL())
 			.setFooter("Type `cancel` at any time to cancel this process")
 			.setDescription("Please select what kind of background you want!");
 		const initialMessage = await interaction.user.send({ embeds: [initialEmbed], components: [backgroundImageButtons] })
-			.catch(() => { return interaction.editReply("I can't DM you! Please enable DMs for this server, or allow DMs from non-friends."); });
+			.catch(() => { return interaction.editReply("I can't DM you! Please enable DMs for this server, or allow DMs from"); });
 		if(initialMessage.content) return;
 		const DMChannel = initialMessage.channel;
 		client.imageCreation.set(interaction.user.id, {
@@ -53,7 +53,7 @@ module.exports = {
 
 		let canvas = Canvas.createCanvas(500, 500);
         let ctx = canvas.getContext("2d");
-
+		if(!client.imageCreation.has(interaction.user.id)) return;
 		const editedCanvas = await backgroundButtonCollectorFunction(initialMessage, initialEmbed, ctx, canvas, interaction.user, client);
 		if(editedCanvas) {
 			canvas = editedCanvas;
@@ -63,9 +63,9 @@ module.exports = {
 		if(!client.imageCreation.has(interaction.user.id)) return;
 		const textEmbed = new MessageEmbed()
 			.setColor(color)
-			.setAuthor("Image Creation / Text Creation", client.user.avatarURL())
+			.setAuthor("Image Creation/Text Creation", client.user.avatarURL())
 			.setFooter("Type `cancel` at any time to cancel this process")
-			.setDescription("Please enter the text you want to place on the image!");
+			.setDescription("Please enter the text you want to place on the image! Type `skip` if you don't want any text!");
 		const textMessage = await interaction.user.send({ embeds: [textEmbed] });
 
 		let choiceMessage;

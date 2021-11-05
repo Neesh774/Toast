@@ -15,10 +15,15 @@ module.exports = async function textCollectorFunction(message, initialEmbed, use
             collected = false;
         });
     if(!collected) return collectorEnd(message, true, client);
-    const image = (await renderImage(client, user));
+    const image = await renderImage(client, user);
+    const m = collectedArray.first();
+    if(m.content.toLowerCase() === "cancel") return;
     let imageBuffer = image.toBuffer();
     return await new Promise((resolve, reject) => {
-        const m = collectedArray.first();
+        if(m.content.toLowerCase() === "skip") {
+            imageBuffer = (renderImage(client, user)).then(imageCanvas => imageCanvas.toBuffer());
+            return resolve(imageBuffer);
+        }
         average(imageBuffer, async (err, color) => {
             const fillStyle = invert([color[0], color[1], color[2]], true);
             const textSize = Math.floor(image.width / 15);
@@ -33,7 +38,6 @@ module.exports = async function textCollectorFunction(message, initialEmbed, use
             });
             client.imageCreation.set(user.id, imageObject);
             imageBuffer = (await renderImage(client, user)).toBuffer();
-            await message.edit({ embeds: [initialEmbed], files: [imageBuffer] });
             resolve(imageObject);
         });
     });
