@@ -38,13 +38,19 @@ module.exports = async function imageChoices(client, user) {
     const options = client.imageCreation.get(user.id).text.map((textObj, index) => {
         return {
             label: textObj.text,
-            value: `${index}`,
+            value: `t${index}`,
             description: "A custom text",
         };
-    });
+    }).concat(client.imageCreation.get(user.id).images.map((imageObj, index) => {
+        return {
+            label: imageObj.imageName,
+            value: `i${index} ${imageObj.imageName}`,
+            description: "A custom image",
+        };
+    }));
     const editText = new MessageSelectMenu()
         .setCustomId("editText")
-        .setPlaceholder("Edit Text")
+        .setPlaceholder("Edit Text and Images")
         .setMaxValues(1)
         .setOptions(options);
     const imageFile = (await renderImage(client, user)).toBuffer();

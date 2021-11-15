@@ -31,20 +31,44 @@ const rotateRow = new MessageActionRow()
 
 const sizeMinus = new MessageButton()
     .setLabel("-")
-    .setCustomId("z-")
+    .setCustomId("s-")
     .setStyle("PRIMARY");
 const size = new MessageButton()
-    .setLabel("zoom")
-    .setCustomId("zoom")
+    .setLabel("size")
+    .setCustomId("size")
     .setEmoji("🔍")
     .setStyle("SECONDARY");
 const sizePlus = new MessageButton()
     .setLabel("+")
-    .setCustomId("z+")
+    .setCustomId("s+")
     .setStyle("PRIMARY");
 
 const sizeRow = new MessageActionRow()
     .setComponents([sizeMinus, size, sizePlus]);
+
+const moveLeft = new MessageButton()
+    .setLabel("Left")
+    .setCustomId("ml")
+    .setEmoji("◀️")
+    .setStyle("PRIMARY");
+const moveRight = new MessageButton()
+    .setLabel("Right")
+    .setCustomId("mr")
+    .setEmoji("▶️")
+    .setStyle("PRIMARY");
+const moveUp = new MessageButton()
+    .setLabel("Up")
+    .setCustomId("mu")
+    .setEmoji("🔼")
+    .setStyle("PRIMARY");
+const moveDown = new MessageButton()
+    .setLabel("Down")
+    .setCustomId("md")
+    .setEmoji("🔽")
+    .setStyle("PRIMARY");
+
+const moveRow = new MessageActionRow()
+    .setComponents([moveLeft, moveRight, moveUp, moveDown]);
 
 const complete = new MessageButton()
     .setLabel("complete")
@@ -55,4 +79,4 @@ const complete = new MessageButton()
 const completeRow = new MessageActionRow()
     .setComponents([complete]);
 
-module.exports = ([rotateRow, sizeRow, completeRow]);
+module.exports = ([rotateRow, sizeRow, moveRow, completeRow]);

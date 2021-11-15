@@ -37,6 +37,7 @@ module.exports = {
 		client.imageCreation.set(interaction.user.id, {
 			background: null,
 			text: [],
+			images: [],
 		});
 		const cancelCollectorFilter = (message) => {
 			return message.content.toLowerCase() === "cancel" && !message.author.bot;
@@ -59,7 +60,6 @@ module.exports = {
 			canvas = editedCanvas;
 			ctx = canvas.getContext("2d");
 		}
-
 		if(!client.imageCreation.has(interaction.user.id)) return;
 		const textEmbed = new MessageEmbed()
 			.setColor(color)

@@ -21,6 +21,7 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             i.editReply("Successfully set the background!");
             await initialMessage.edit({ embeds: [initialEmbed], files: [canvas.toBuffer("image/jpeg")] });
+            client.imageCreation.get(user.id).background = canvas.toBuffer();
         }
         // CUSTOM COLOR
         else if(i.customId === "customColor") {
@@ -43,6 +44,7 @@ module.exports = async function backgroundButtonCollectorFunction(initialMessage
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
                         m.reply("Successfully set the background!");
                         await initialMessage.edit({ files: [canvas.toBuffer("image/jpeg")] });
+                        client.imageCreation.get(user.id).background = canvas.toBuffer();
                     }
                     else {
                         m.reply("Please enter a valid color!");

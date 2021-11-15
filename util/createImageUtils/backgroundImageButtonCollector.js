@@ -3,7 +3,6 @@ const collectorEnd = require("./collectorEnd");
 
 module.exports = async function backgroundImageButtonFunction(backgroundEditMessage, image, client, user) {
     const backgroundImageButtonCollector = backgroundEditMessage.createMessageComponentCollector({ time: 60000 });
-    const canvas = new Canvas(image.width, image.height);
     let zoom = 1;
     let rotation = 0;
     const promise = new Promise((resolve) => {

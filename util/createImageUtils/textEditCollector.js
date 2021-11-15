@@ -9,7 +9,7 @@ const collectorEnd = require("./collectorEnd");
 
 module.exports = async function textEditFunction(message, client, interaction) {
     const imageObj = client.imageCreation.get(interaction.user.id);
-    const index = parseInt(interaction.values[0]);
+    const index = parseInt(interaction.values[0].slice(1));
     const text = client.imageCreation.get(interaction.user.id).text[index];
     const buttonCollector = message.createMessageComponentCollector({ time: 60000 });
     let collected = false;
